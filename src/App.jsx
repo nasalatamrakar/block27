@@ -22,23 +22,22 @@ function App() {
         }
       );
       console.log(data);
-      setUser(data);
+      setUser(data.data);
       
     } catch (error) {
       console.error(error);
     }
-    console.log(user)
   };
 
   useEffect(() => {
     setError("")
     if (window.localStorage.getItem("token")) {
     authenticate();
-  }}, [user.id]);
+  }}, [user.username]);
 
   return (
     <div>
-      {user.id? (
+      {user.username ? (
         <Welcome user={user} setUser={setUser}/>
       ) : (
         <div>
