@@ -7,8 +7,13 @@ import axios from "axios";
 function App() {
   const [user, setUser] = useState({});
   const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
-  const authenticate = async () => {
+
+  async function handleClick() {
+
+  // }
+  // const authenticate = async () => {
     try {
       if (!window.localStorage.getItem("token")){
         throw Error("no token found")
@@ -23,30 +28,36 @@ function App() {
       );
       console.log(data);
       setUser(data.data);
+      setSuccessMessage(data.message);
       
     } catch (error) {
       console.error(error);
+      setError(error.message);
     }
   };
 
   useEffect(() => {
     setError("")
     if (window.localStorage.getItem("token")) {
-    authenticate();
+    /* authenticate(); */
   }}, [user.username]);
 
   return (
     <div>
       {user.username ? (
-        <Welcome user={user} setUser={setUser}/>
+        <Welcome user={user} setUser={setUser} setSuccessMessage={setSuccessMessage}/>
       ) : (
         <div>
           <h1>Please Login:</h1>
-          <SignUpForm authenticate={authenticate} setError={setError}/>
+          <SignUpForm /* authenticate={authenticate} */ setError={setError}/>
         </div>
       )}
       <hr />
-      {error === 401 ? <h1>incorrect credentials</h1> : null}
+      <div><h2>Authenticate</h2>
+      <button onClick={handleClick}>Authenticate Token</button>
+      <p>{successMessage}</p>
+      {error && <p>{error}</p>}
+      </div>
     </div>
   );
 }
